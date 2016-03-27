@@ -1,0 +1,36 @@
+<messageSchema>
+	<types>
+		<enum name="BuySellIndicator">
+			<value name="Sell">0</value>
+			<value name="Buy">1</value>
+			<value name="Invalid">10</value>
+		</enum>
+			.
+			.
+			.
+		<enum name="BuySellIndicator">
+			.
+			.
+		</enum>
+		<compositeType name= "BookElement">
+			<field name = "price" type="double"/>
+			<field name = "quantity" type="int"/>
+			<field name = "orderCount" type="int"/>
+		</compositeType>
+	</types>
+	<message name ="MarketUpdate">
+		<field name="instrumentId" type="long"/>
+		<field name="timeExchange" type="long"/>
+		<field name="buySellIndicator" type="BuySellIndicator" />
+		<list name="buyBook" type="BookElement" length="20"/>
+		<list name="symbol" type="char" length="20"/>
+	</message>
+	<message name ="QuoteRequest">
+		.
+		.
+	</message>
+	<message name ="QuoteResponse">
+		.
+		.
+	</message>
+</messageSchema>
