@@ -54,15 +54,15 @@ public class StaticUtilGenerator {
 		
 		//Generate parser to convert to object from ByteBuffer  
 		
-		generatedString.append("public static"+name+" convertToObject(ByteBuffer buffer){ \n");
+		generatedString.append("public static "+name+" convertToObject(ByteBuffer buffer){ \n");
 		generatedString.append(name+" genObject = new "+name+"();\n");
-		compObj.getFields().forEach((fieldName , fieldObject)->generateBufferToObjConverter(fieldName,fieldObject));
+		compObj.getFields().forEach((fieldName , fieldObject)->generateReader(fieldName,fieldObject));
 		
 		//Close the curly bracket
 		generatedString.append("}");
 	} 
 	
-	private void  generateBufferToObjConverter(String fieldName, FieldType fieldObject) {
+	private void  generateReader(String fieldName, FieldType fieldObject) {
 		
 		if(fieldObject.isArray){
 			ListType arrayField = (ListType)fieldObject;

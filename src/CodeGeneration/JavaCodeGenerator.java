@@ -53,11 +53,13 @@ public class JavaCodeGenerator {
 			// parse different tags in XML
 			Map<String, CompositeType> compositeTypeMap = populateCompositeType(document, xPath);
 			Map<String, EnumType> enumTypeMap = populateEnumMap(document, xPath);
-			Map<String, FieldType> fieldMap = populateFieldMap(document, xPath);
+			Map<String, CompositeType> messageMap = populateMessageMap(document, xPath);
 			
 			//Generate the Static Type utility class for Enum and  Inner Class
 			StaticUtilGenerator sUtilGen = new StaticUtilGenerator(outputDir);
 			sUtilGen.utilGenerator(compositeTypeMap, enumTypeMap);
+			
+			//Generate Java objects
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -84,15 +86,28 @@ public class JavaCodeGenerator {
 		return map;
 	}
 
-	private static Map<String, FieldType> populateFieldMap(Document document, XPath xPath)
+	private static Map<String, CompositeType> populateMessageMap(Document document, XPath xPath)
 			throws XPathExpressionException {
-		LinkedHashMap<String, FieldType> map = new LinkedHashMap<>();
+		LinkedHashMap<String, CompositeType> map = new LinkedHashMap<>();
 
 		forEach((NodeList) xPath.compile(CodeGenerationsConstants.MESSAGE_XPATH_EXPR).evaluate(document,
-				XPathConstants.NODESET), (node) -> addFileds(map, node));
+				XPathConstants.NODESET), (node) -> addMessages(map, node));
 
 		return map;
 	}
+
+	private static void addMessages(LinkedHashMap<String, CompositeType> map, Node node) {
+		CompositeType compType = new CompositeType();
+		compType.setName(node.getAttributes().getNamedItem("name").getNodeValue());
+		Map<String, FieldType> memberMetaData = compType.getFields();
+		
+		//Add members of composite type
+		addFileds(memberMetaData,node);
+		
+		map.put(compType.getName(), compType);
+	}
+
+
 
 	private static Map<String, EnumType> populateEnumMap(Document document, XPath xPath)
 			throws XPathExpressionException {
