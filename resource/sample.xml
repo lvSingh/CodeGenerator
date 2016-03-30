@@ -5,13 +5,6 @@
 			<value name="Buy">1</value>
 			<value name="Invalid">10</value>
 		</enum>
-			.
-			.
-			.
-		<enum name="BuySellIndicator">
-			.
-			.
-		</enum>
 		<compositeType name= "BookElement">
 			<field name = "price" type="double"/>
 			<field name = "quantity" type="int"/>
@@ -26,11 +19,9 @@
 		<list name="symbol" type="char" length="20"/>
 	</message>
 	<message name ="QuoteRequest">
-		.
-		.
-	</message>
-	<message name ="QuoteResponse">
-		.
-		.
+		<field name="instrumentId" type="long"/>
+		<field name="timeExchange" type="long"/>
+		<field name="buySellIndicator" type="BuySellIndicator" />
+		<list name="symbol" type="char" length="20"/>
 	</message>
 </messageSchema>

@@ -60,6 +60,8 @@ public class JavaCodeGenerator {
 			sUtilGen.utilGenerator(compositeTypeMap, enumTypeMap);
 			
 			//Generate Java objects
+			ClassTypeGenerator classGeneratorUtil = new ClassTypeGenerator(outputDir, enumTypeMap);
+			classGeneratorUtil.generateJavaClass(messageMap);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

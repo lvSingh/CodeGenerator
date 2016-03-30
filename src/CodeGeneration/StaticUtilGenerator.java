@@ -18,7 +18,10 @@ public class StaticUtilGenerator {
 	public StaticUtilGenerator(String outputDir){
 		this.outputDir = outputDir;
 		className = new StringBuilder("TypeUtils");
-		generatedString = new StringBuilder("public class "+className + "{ \n");
+		
+		//Import statements
+		generatedString = new StringBuilder("import java.nio.ByteBuffer;\n");
+		generatedString.append("public class "+className + "{ \n"); 
 		
 	}
 	public boolean utilGenerator(Map<String,CompositeType> compositeTypeMap,Map<String,EnumType> enumMap){
@@ -58,8 +61,14 @@ public class StaticUtilGenerator {
 		generatedString.append(name+" genObject = new "+name+"();\n");
 		compObj.getFields().forEach((fieldName , fieldObject)->generateReader(fieldName,fieldObject));
 		
+		//Add the return statement
+		generatedString.append("return genObject ;\n");
+		
 		//Close the curly bracket
-		generatedString.append("}");
+		generatedString.append("}\n");
+		
+		//Close the curly bracket
+		generatedString.append("}\n");
 	} 
 	
 	private void  generateReader(String fieldName, FieldType fieldObject) {
@@ -80,9 +89,9 @@ public class StaticUtilGenerator {
 			
 			//Check of Type is primitive or Reference
 			String typeGetter = CodeGenerationsConstants.primitiveTypes.get(fieldObject.getType());
-			typeGetter = typeGetter != null?"buffer."+typeGetter+"()":fieldObject+".convertToObject(buffer);";
+			typeGetter = typeGetter != null?"buffer."+typeGetter+"()":fieldObject+".convertToObject(buffer)";
 			
-			generatedString.append("genObject."+fieldObject.getName()+"[i] = "+typeGetter);
+			generatedString.append("genObject."+fieldObject.getName()+" = "+typeGetter+";\n");
 			
 		}
 	}
@@ -126,7 +135,7 @@ public class StaticUtilGenerator {
 	
 	private void generateGetEnum(String name) {
 		
-		generatedString.append("public "+ name +" getEnum"+name+"( byte b ){\n");
+		generatedString.append("public static "+ name +" getEnum"+name+"( int b ){\n");
 		generatedString.append("for( "+name+" e :"+name+".values() ){\n");
 		generatedString.append("if( e.getValue() == b ){\n");
 		generatedString.append("return e ; \n } \n } \n return null; \n }\n");
