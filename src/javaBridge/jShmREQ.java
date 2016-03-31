@@ -82,6 +82,7 @@ public class jShmREQ {
 			_writeCount = _writeSyncBuf.get(0);
 			if(_writeCount == 0 )
 			{
+				
 				_writeDataBuf.put(parseToByte(requestObj));
 				_writeDataBuf.position(0);
 				_writeSyncBuf.put((byte)1);
@@ -100,6 +101,7 @@ public class jShmREQ {
 	private byte[] parseToByte(jRequestMsg Obj)
 	{
 		byte [] objData = new byte[54];
+		
 		int i = 0 ;
 			if( i >= 0 && i <= 7 )
 			{
